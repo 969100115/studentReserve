@@ -32,7 +32,7 @@ public class ReserveRecordServiceImpl implements ReserveRecordService {
         BeanUtils.copyProperties(reserveRecordDTO,reserveRecord);
         reserveRecordMapper.insert(reserveRecord);
 
-        redisUtil.set(reserveKey, JSONObject.toJSONString(reserveRecord));
+        redisUtil.set(reserveKey, JSONObject.toJSONString(reserveRecord),3*24*60*60);
         ReserveVO reserveVO = new ReserveVO();
         BeanUtils.copyProperties(reserveRecord,reserveVO);
         reserveVO = setColor(reserveVO);

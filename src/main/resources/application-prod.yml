@@ -5,21 +5,16 @@ spring:
   datasource:
     username: root
     password: Lairey2017.
-    url: jdbc:mysql://118.25.197.46:3306/hall_reserve?useUnicode=true&autoReconnect=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2b8
+    url: jdbc:mysql://127.0.0.1:3306/hall_reserve?useUnicode=true&autoReconnect=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2b8
     driver-class-name: com.mysql.jdbc.Driver
 
   redis:
-    database: 0           # Redis服务器数据库
-    host: 172.17.0.11   # Redis服务器地址
-    port: 7000            # Redis服务器连接端口
+    database: 10           # Redis服务器数据库
+    host: 127.0.0.1   # Redis服务器地址
+    port: 6379            # Redis服务器连接端口
     password: lairey2017  # Redis服务器连接密码（默认为空）
     timeout: 16000       # 连接超时时间（毫秒）
     block-when-exhausted: true
-    cluster:
-      nodes:
-        - 111.229.77.75:7000
-        - 111.229.77.75:7001
-        - 172.17.0.11:7000
 #    jedis:
 #      pool:
 #        max-active: 200   # 连接池最大连接数（使用负值表示没有限制）
@@ -34,5 +29,8 @@ mybatis:
 
 tencent:
   xcx: # 小程序
-    appId: wx5948c9dfbb310013
-    appSecret: 1c1f75f5bfd5832f940ab25cf7b2ac66
+    appId: wx58279a581c0d9f82
+    appSecret: 9221b4631ce12f7d39c2cbe0c7a46489
+
+test:
+  port: 4433

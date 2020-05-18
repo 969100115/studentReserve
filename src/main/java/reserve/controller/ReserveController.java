@@ -5,12 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 import reserve.bean.ReserveRecord;
 import reserve.bean.ReserveTime;
 import reserve.common.*;
@@ -40,6 +39,9 @@ public class ReserveController {
     ReserveRecordService reserveRecordService;
     @Autowired
     WechatUtils wechatUtils;
+
+    @Value("${test.port}")
+    String port;
 
     @PostMapping("getPlaceDiction")
     public ResultBean getPlaceDiction() {
@@ -78,6 +80,10 @@ public class ReserveController {
     public ResultBean reserve(@RequestBody ReserveRecordParams params) {
         String dateKey = RedisKeyPrefixEnum.RESERVE_DATA_.getKey("");
         String dateValue = (String) redisUtil.get(dateKey);
+
+        if(StringUtils.isBlank(params.getOpenId())){
+            return new ResultBean("", ResultEnum.UN_AUTHORIZATION);
+        }
 
         String reserveKey = RedisKeyPrefixEnum.RESERVE_RECORD_.getKey(params.getOpenId()+"_"+dateValue+"_"+params.getTime()+"_*");
         if(!redisUtil.getKeys(reserveKey).isEmpty()) {
@@ -227,7 +233,7 @@ public class ReserveController {
     }
 
     @PostMapping("reserveTest")
-    public ResultBean reserveTest(@RequestBody ReserveRecordParams params) {
+    public ResultBean reserveTest(@RequestAttribute ReserveRecordParams params) {
         String dateKey = RedisKeyPrefixEnum.RESERVE_DATA_.getKey("");
         String dateValue = (String) redisUtil.get(dateKey);
 
@@ -247,6 +253,22 @@ public class ReserveController {
 
         return new ResultBean(reserveVO, ResultEnum.SUCCESS);
     }
+
+    @PostMapping("delReserve")
+    public ResultBean delReserve(@RequestBody JSONObject params) {
+
+        String dateKey = RedisKeyPrefixEnum.RESERVE_RECORD_.getKey("");
+        String key = dateKey+"*_"+params.getString("data")+"_*";
+        Set reserveSet =  redisUtil.getKeys(key);
+        Iterator iterator = reserveSet.iterator();
+        while (iterator.hasNext()){
+            redisUtil.del((String) iterator.next());
+        }
+        return new ResultBean("true",ResultEnum.SUCCESS);
+
+    }
+
+
 
 
 

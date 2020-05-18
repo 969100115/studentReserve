@@ -37,6 +37,7 @@ public enum ResultEnum{
     TEST("99999",""),
 
 
+    UN_AUTHORIZATION("1000","用户未授权"),
     FULL_RESERVE("1001","当前时间段预约已满"),
     USER_RESERVED("2001","您在该时间段已预约")
 

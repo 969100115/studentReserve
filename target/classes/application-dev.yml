@@ -29,3 +29,6 @@ tencent:
   xcx: # 小程序
     appId: wx5948c9dfbb310013
     appSecret: 1c1f75f5bfd5832f940ab25cf7b2ac66
+
+test:
+  port: 8080
